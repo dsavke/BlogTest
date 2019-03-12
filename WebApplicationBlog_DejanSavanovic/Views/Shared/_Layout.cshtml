@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testovi</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Styles.Render("~/Content/jtable-css")
+</head>
+<body class="p-0 m-0">
+    <div class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggler bg-dark" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+
+                    @{
+                        <li class="nav-item">@Html.ActionLink("Pocetna", "Index", "Pocetna", new { }, new { @class = "nav-link" })</li>
+
+                        if (User.IsInRole("Korisnik"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Omiljeni blogovi", "Index", "Pocetna", new { }, new { @class = "nav-link" })</li>
+                        }
+
+                        else if (User.IsInRole("Administrator"))
+                        {
+                            <li class="nav-item">@Html.ActionLink("Omiljeni blogovi", "Omiljeni", "Blog", new { }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Odabravanja", "OdobravanjeBlogova", "Blog", new { }, new { @class = "nav-link" })</li>
+                            <li class="nav-item">@Html.ActionLink("Korisnici", "Index", "Korisnik", new { }, new { @class = "nav-link" })</li>
+                        }
+
+                        <li class="float-right">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-secondary">@(User.Identity.IsAuthenticated == true ? User.Identity.Name : "Niste prijavljeni")</button>
+                                <button type="button" class="btn btn-secondary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    @{
+                                        if (User.Identity.IsAuthenticated)
+                                        {
+                                            <a class="dropdown-item" href="/Nalog/Odjavi">Odjava</a>
+                                        }
+                                        else
+                                        {
+                                            <a class="dropdown-item" href="/Nalog/Prijavi">Prijava</a>
+                                        }
+                                    }
+                                </div>
+                            </div>
+                        </li>
+
+                        <li style="padding-top:12px">
+                            @Html.DropDownList("Jezik", new List<SelectListItem>()
+                               {
+                                   new SelectListItem(){ Text = "Srpski", Value = ""},
+                                   new SelectListItem(){ Text = "Engleski", Value = "en"}
+                               }, new { @class = "form-control", @id = "lista"})
+                        </li>
+
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content mt-3">
+        @RenderBody()
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/Scripts/jtable-scripts")
+    @RenderSection("scripts", required: false)
+
+    <script type="text/javascript">
+       // console.log($(document).html());
+        $(document).ready(function () {
+            $("#lista").change(function () {
+
+                $.post("/Pocetna/PromijeniJezik", { lang: $("#lista").val() }, function (result, status) {
+                    if (!result.Success) console.log('Nije promijenilo!');
+                    else {
+                        window.location.reload();
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

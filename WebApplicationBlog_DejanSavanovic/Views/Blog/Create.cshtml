@@ -1,0 +1,82 @@
+﻿@model WebApplicationBlog_DejanSavanovic.Models.BlogViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4 class="pb-5">Novi blog</h4>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            @Html.LabelFor(model => model.Naslov, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-10">
+                @Html.EditorFor(model => model.Naslov, new { htmlAttributes = new { @class = "form-control col-12" } })
+                @Html.ValidationMessageFor(model => model.Naslov, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            @Html.LabelFor(model => model.DrzavaId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-10">
+                @Html.DropDownListFor(model => model.DrzavaId, ViewBag.Drzave as List<SelectListItem>, new { @class = "form-control col-12" })
+                @Html.ValidationMessageFor(model => model.DrzavaId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            @Html.LabelFor(model => model.DatumPutovanja, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-10">
+                @Html.EditorFor(model => model.DatumPutovanja, new { htmlAttributes = new { @class = "form-control col-12" } })
+                @Html.ValidationMessageFor(model => model.DatumPutovanja, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            @Html.LabelFor(model => model.NaslovnaSlikaLink, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-10">
+                @Html.EditorFor(model => model.NaslovnaSlikaLink, new { htmlAttributes = new { @class = "form-control col-12" } })
+                @Html.ValidationMessageFor(model => model.NaslovnaSlikaLink, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            @Html.LabelFor(model => model.Sadrzaj, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-10">
+                @Html.TextAreaFor(model => model.Sadrzaj)
+                @Html.ValidationMessageFor(model => model.Sadrzaj, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="row pt-4">
+            <div class="col-12">
+                <input type="submit" value="Sacuvaj" class="btn btn-primary form-control float-right" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+
+    <script type="text/javascript">
+/*
+        $(document).ready(function () {
+            $('#Sadrzaj').summernote();
+
+            $('form').each(function () {
+                if ($(this).data('validator'))
+                    $(this).data('validator').settings.ignore = ".note-editor *";
+            });
+        });*/
+
+
+    </script>
+
+}

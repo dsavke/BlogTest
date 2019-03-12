@@ -1,0 +1,69 @@
+﻿@model WebApplicationBlog_DejanSavanovic.Models.PocetnaViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div>
+
+    <div class="row">
+
+        <input type="text" id="txtPretraga" class="form-control col-4" />
+
+        @Html.DropDownListFor(model => model.Drzave, Model.Drzave as List<SelectListItem>, new { @class = "form-control" })
+
+        <input type="button" value="Trazi" id="btnPretrazi" />
+        <input type="button" value="Novi blog" id="btnNoviBlog" />
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-9" id="blogovi">
+
+
+        </div>
+
+        <div class="col-3">
+
+            <div id="topPetBlogova">
+                <h3>Top 5 blogova</h3>
+                <table class="table table-bordered">
+                    <tbody>
+                        @foreach (var item in Model.TopPetBlogova)
+                        {
+                            <tr>
+                                <td scope="row">@item.Naslov  -  @item.BrojSvidjanja</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div id="topPetAutora">
+
+                <h3>Top 5 autora</h3>
+                <table class="table table-bordered">
+                    <tbody>
+                        @foreach (var item in Model.TopPetAutora)
+                        {
+                            <tr>
+                                <td scope="row">@item.KorisnickoIme  -  @item.BrojSvidjanja</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/Scripts/App/Pocetna/pretragaBlogova.js"></script>    
+}
+

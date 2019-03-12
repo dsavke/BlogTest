@@ -1,0 +1,83 @@
+﻿@{
+                /**/
+
+                ViewBag.Title = "Index";
+}
+
+<div id="StudentTableContainer"></div>
+
+@section scripts{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            $('#StudentTableContainer').jtable({
+                title: 'Korisnici',
+                paging: true, //Enable paging
+                pageSize: 10, //Set page size (default: 10)
+                sorting: true, //Enable sorting
+                defaultSorting: 'Ime ASC', //Set default sorting
+                actions: {
+                    listAction: '/Korisnik/List',
+                    deleteAction: '/Korisnik/Delete',
+                    updateAction: '/Korisnik/Update',
+                    createAction: '/Korisnik/Create'
+                },
+                fields: {
+                    KorisnikId: {
+                        key: true,
+                        create: false,
+                        edit: false,
+                        list: false
+                    },
+                    Ime: {
+                        title: 'Ime',
+                        width: '23%'
+                    },
+                    Prezime: {
+                        title: 'Prezime'
+                    },
+                    Email: {
+                        title: 'Email'
+                    },
+                    KorisnickoIme: {
+                        title: 'Korisnicko ime'
+                    },
+                    Lozinka: {
+                        title: 'Lozinka',
+                        type: 'password',
+                        list: false
+                    },
+                    UlogaId: {
+                        title: 'Uloga',
+                        options: '/Korisnik/ListaUloga'
+                    },
+                    Aktivan: {
+                        title: 'Aktivan',
+                        type: 'radiobutton',
+                        options: {
+                            'true': 'Da',
+                            'false': 'Ne'
+                        }
+                    }
+                },
+                formCreated: function (event, data) {
+                    $("#Edit-Ime").keyup(function () {
+                        $("#Edit-KorisnickoIme").val($("#Edit-Ime").val().toLowerCase() + "." + $("#Edit-Prezime").val().toLowerCase());
+                    });
+
+                    $("#Edit-Prezime").keyup(function () {
+                        $("#Edit-KorisnickoIme").val($("#Edit-Ime").val().toLowerCase() + "." + $("#Edit-Prezime").val().toLowerCase());
+                    });
+
+                }
+            });
+
+            //Load student list from server
+            $('#StudentTableContainer').jtable('load');
+        });
+
+    </script>
+
+}
+

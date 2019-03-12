@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewBag.Title = "Prijavi";
+}
+
+<div>
+
+    <h2>Prijava</h2>
+
+    <div>
+
+        @using (Html.BeginForm())
+        {
+
+            <div class="pt-2">
+                <label for="KorisnickoIme">Korisnicko ime</label>
+                <input class="form-control" id="KorisnickoIme" name="KorisnickoIme" type="text" />
+            </div>
+
+            <div class="pt-2">
+                <label for="Lozinka">Lozinka</label>
+                <input class="form-control" id="Lozinka" name="Lozinka" type="text" />
+            </div>
+
+            <input class="form-control mt-4" type="submit" value="PRIJAVA" />
+
+        }
+
+    </div>
+
+</div>
+

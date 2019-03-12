@@ -1,0 +1,53 @@
+﻿@model IEnumerable<WebApplicationBlog_DejanSavanovic.Models.OdobriBlogViewModel>
+
+@{
+    ViewBag.Title = "OdobravanjeBlogova";
+}
+
+<h2>Odobravanje blogova</h2>
+
+<div>
+
+    @using (Html.BeginForm())
+    {
+    <form>
+        @for(int i = 0; i < Model.Count(); i++)
+        {
+
+        <div class="row pt-2">
+
+            <div class="col-4">
+
+                <img class="col-12" src="@Model.ElementAt(i).NaslovnaSlikaLink" />
+
+            </div>
+
+            <div class="col-8">
+
+                <h3><a href="/Blog/Details/@Model.ElementAt(i).BlogId">@Model.ElementAt(i).Naslov</a></h3>
+
+                <div class="row pt-5">
+                    <div class="col-7">
+                        <p class="">@Model.ElementAt(i).KorisnickoIme</p>
+                    </div>
+                    <div class="col-5">
+                        @Html.Hidden("Model[" + i + "].BlogId", Model.ElementAt(i).BlogId)
+                        @Html.Label("Model[" + i + "].Odobren", "Odobri")
+                        @Html.CheckBox("Model[" + i + "].Odobren", Model.ElementAt(i).Odobren)
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+        }
+
+        <input type="submit" value="Sacuvaj"/>
+
+        </form>
+
+     }
+
+</div>
+

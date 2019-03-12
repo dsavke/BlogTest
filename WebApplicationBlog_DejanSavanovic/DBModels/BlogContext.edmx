@@ -1,0 +1,504 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="TestDB_DejanSavanovicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="BlogId" />
+          </Key>
+          <Property Name="BlogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KorisnikId" Type="int" Nullable="false" />
+          <Property Name="DrzavaId" Type="int" Nullable="false" />
+          <Property Name="Naslov" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="Sadrzaj" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="DatumPutovanja" Type="datetime" />
+          <Property Name="NaslovnaSlikaLink" Type="nvarchar" MaxLength="1000" />
+          <Property Name="DatumKreiranja" Type="datetime" Nullable="false" />
+          <Property Name="Odobren" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Drzava">
+          <Key>
+            <PropertyRef Name="DrzavaId" />
+          </Key>
+          <Property Name="DrzavaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Komentar">
+          <Key>
+            <PropertyRef Name="KomentarId" />
+          </Key>
+          <Property Name="KomentarId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="KorisnikId" Type="int" Nullable="false" />
+          <Property Name="BlogId" Type="int" Nullable="false" />
+          <Property Name="Sadrzaj" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="DatumKreiranja" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="KorisnikId" />
+          </Key>
+          <Property Name="KorisnikId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UlogaId" Type="int" Nullable="false" />
+          <Property Name="Ime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Prezime" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Lozinka" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Aktivan" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="OmiljeniBlog">
+          <Key>
+            <PropertyRef Name="BlogId" />
+            <PropertyRef Name="KorisnikId" />
+          </Key>
+          <Property Name="BlogId" Type="int" Nullable="false" />
+          <Property Name="KorisnikId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Slika">
+          <Key>
+            <PropertyRef Name="SlikaId" />
+          </Key>
+          <Property Name="SlikaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="BlogId" Type="int" Nullable="false" />
+          <Property Name="Link" Type="nvarchar" MaxLength="1000" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Uloga">
+          <Key>
+            <PropertyRef Name="UlogaId" />
+          </Key>
+          <Property Name="UlogaId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Naziv" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Blog_Drzava">
+          <End Role="Drzava" Type="Self.Drzava" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drzava">
+              <PropertyRef Name="DrzavaId" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="DrzavaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Blog_Korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikId" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="KorisnikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Komentar_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Komentar_Korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikId" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="KorisnikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Korisnik_Uloga">
+          <End Role="Uloga" Type="Self.Uloga" Multiplicity="1" />
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uloga">
+              <PropertyRef Name="UlogaId" />
+            </Principal>
+            <Dependent Role="Korisnik">
+              <PropertyRef Name="UlogaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OmiljeniBlog_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="OmiljeniBlog" Type="Self.OmiljeniBlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="OmiljeniBlog">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_OmiljeniBlog_Korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="OmiljeniBlog" Type="Self.OmiljeniBlog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikId" />
+            </Principal>
+            <Dependent Role="OmiljeniBlog">
+              <PropertyRef Name="KorisnikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Slika_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Slika" Type="Self.Slika" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="Slika">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TestDB_DejanSavanovicModelStoreContainer">
+          <EntitySet Name="Blog" EntityType="Self.Blog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Drzava" EntityType="Self.Drzava" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Komentar" EntityType="Self.Komentar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Korisnik" EntityType="Self.Korisnik" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OmiljeniBlog" EntityType="Self.OmiljeniBlog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Slika" EntityType="Self.Slika" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Uloga" EntityType="Self.Uloga" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Blog_Drzava" Association="Self.FK_Blog_Drzava">
+            <End Role="Drzava" EntitySet="Drzava" />
+            <End Role="Blog" EntitySet="Blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Blog_Korisnik" Association="Self.FK_Blog_Korisnik">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Blog" EntitySet="Blog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Komentar_Blog" Association="Self.FK_Komentar_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="Komentar" EntitySet="Komentar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Komentar_Korisnik" Association="Self.FK_Komentar_Korisnik">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="Komentar" EntitySet="Komentar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Korisnik_Uloga" Association="Self.FK_Korisnik_Uloga">
+            <End Role="Uloga" EntitySet="Uloga" />
+            <End Role="Korisnik" EntitySet="Korisnik" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OmiljeniBlog_Blog" Association="Self.FK_OmiljeniBlog_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="OmiljeniBlog" EntitySet="OmiljeniBlog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_OmiljeniBlog_Korisnik" Association="Self.FK_OmiljeniBlog_Korisnik">
+            <End Role="Korisnik" EntitySet="Korisnik" />
+            <End Role="OmiljeniBlog" EntitySet="OmiljeniBlog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Slika_Blog" Association="Self.FK_Slika_Blog">
+            <End Role="Blog" EntitySet="Blog" />
+            <End Role="Slika" EntitySet="Slika" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TestDB_DejanSavanovicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Blog">
+          <Key>
+            <PropertyRef Name="BlogId" />
+          </Key>
+          <Property Name="BlogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KorisnikId" Type="Int32" Nullable="false" />
+          <Property Name="DrzavaId" Type="Int32" Nullable="false" />
+          <Property Name="Naslov" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Sadrzaj" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumPutovanja" Type="DateTime" Precision="3" />
+          <Property Name="NaslovnaSlikaLink" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="DatumKreiranja" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Odobren" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Drzava" Relationship="Self.FK_Blog_Drzava" FromRole="Blog" ToRole="Drzava" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK_Blog_Korisnik" FromRole="Blog" ToRole="Korisnik" />
+          <NavigationProperty Name="Komentars" Relationship="Self.FK_Komentar_Blog" FromRole="Blog" ToRole="Komentar" />
+          <NavigationProperty Name="Slikas" Relationship="Self.FK_Slika_Blog" FromRole="Blog" ToRole="Slika" />
+          <NavigationProperty Name="Korisniks" Relationship="Self.OmiljeniBlog" FromRole="Blog" ToRole="Korisnik" />
+        </EntityType>
+        <EntityType Name="Drzava">
+          <Key>
+            <PropertyRef Name="DrzavaId" />
+          </Key>
+          <Property Name="DrzavaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Blogs" Relationship="Self.FK_Blog_Drzava" FromRole="Drzava" ToRole="Blog" />
+        </EntityType>
+        <EntityType Name="Komentar">
+          <Key>
+            <PropertyRef Name="KomentarId" />
+          </Key>
+          <Property Name="KomentarId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="KorisnikId" Type="Int32" Nullable="false" />
+          <Property Name="BlogId" Type="Int32" Nullable="false" />
+          <Property Name="Sadrzaj" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DatumKreiranja" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Blog" Relationship="Self.FK_Komentar_Blog" FromRole="Komentar" ToRole="Blog" />
+          <NavigationProperty Name="Korisnik" Relationship="Self.FK_Komentar_Korisnik" FromRole="Komentar" ToRole="Korisnik" />
+        </EntityType>
+        <EntityType Name="Korisnik">
+          <Key>
+            <PropertyRef Name="KorisnikId" />
+          </Key>
+          <Property Name="KorisnikId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UlogaId" Type="Int32" Nullable="false" />
+          <Property Name="Ime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Prezime" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="KorisnickoIme" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Lozinka" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Aktivan" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Blogs" Relationship="Self.FK_Blog_Korisnik" FromRole="Korisnik" ToRole="Blog" />
+          <NavigationProperty Name="Komentars" Relationship="Self.FK_Komentar_Korisnik" FromRole="Korisnik" ToRole="Komentar" />
+          <NavigationProperty Name="Uloga" Relationship="Self.FK_Korisnik_Uloga" FromRole="Korisnik" ToRole="Uloga" />
+          <NavigationProperty Name="Blogs1" Relationship="Self.OmiljeniBlog" FromRole="Korisnik" ToRole="Blog" />
+        </EntityType>
+        <EntityType Name="Slika">
+          <Key>
+            <PropertyRef Name="SlikaId" />
+          </Key>
+          <Property Name="SlikaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="BlogId" Type="Int32" Nullable="false" />
+          <Property Name="Link" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Blog" Relationship="Self.FK_Slika_Blog" FromRole="Slika" ToRole="Blog" />
+        </EntityType>
+        <EntityType Name="Uloga">
+          <Key>
+            <PropertyRef Name="UlogaId" />
+          </Key>
+          <Property Name="UlogaId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Naziv" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Korisniks" Relationship="Self.FK_Korisnik_Uloga" FromRole="Uloga" ToRole="Korisnik" />
+        </EntityType>
+        <Association Name="FK_Blog_Drzava">
+          <End Role="Drzava" Type="Self.Drzava" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Drzava">
+              <PropertyRef Name="DrzavaId" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="DrzavaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Blog_Korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikId" />
+            </Principal>
+            <Dependent Role="Blog">
+              <PropertyRef Name="KorisnikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Komentar_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Slika_Blog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="1" />
+          <End Role="Slika" Type="Self.Slika" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Blog">
+              <PropertyRef Name="BlogId" />
+            </Principal>
+            <Dependent Role="Slika">
+              <PropertyRef Name="BlogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Komentar_Korisnik">
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="1" />
+          <End Role="Komentar" Type="Self.Komentar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Korisnik">
+              <PropertyRef Name="KorisnikId" />
+            </Principal>
+            <Dependent Role="Komentar">
+              <PropertyRef Name="KorisnikId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Korisnik_Uloga">
+          <End Role="Uloga" Type="Self.Uloga" Multiplicity="1" />
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Uloga">
+              <PropertyRef Name="UlogaId" />
+            </Principal>
+            <Dependent Role="Korisnik">
+              <PropertyRef Name="UlogaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="OmiljeniBlog">
+          <End Role="Blog" Type="Self.Blog" Multiplicity="*" />
+          <End Role="Korisnik" Type="Self.Korisnik" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="BlogContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Blogs" EntityType="Self.Blog" />
+          <EntitySet Name="Drzavas" EntityType="Self.Drzava" />
+          <EntitySet Name="Komentars" EntityType="Self.Komentar" />
+          <EntitySet Name="Korisniks" EntityType="Self.Korisnik" />
+          <EntitySet Name="Slikas" EntityType="Self.Slika" />
+          <EntitySet Name="Ulogas" EntityType="Self.Uloga" />
+          <AssociationSet Name="FK_Blog_Drzava" Association="Self.FK_Blog_Drzava">
+            <End Role="Drzava" EntitySet="Drzavas" />
+            <End Role="Blog" EntitySet="Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Blog_Korisnik" Association="Self.FK_Blog_Korisnik">
+            <End Role="Korisnik" EntitySet="Korisniks" />
+            <End Role="Blog" EntitySet="Blogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Komentar_Blog" Association="Self.FK_Komentar_Blog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="Komentar" EntitySet="Komentars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Slika_Blog" Association="Self.FK_Slika_Blog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="Slika" EntitySet="Slikas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Komentar_Korisnik" Association="Self.FK_Komentar_Korisnik">
+            <End Role="Korisnik" EntitySet="Korisniks" />
+            <End Role="Komentar" EntitySet="Komentars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Korisnik_Uloga" Association="Self.FK_Korisnik_Uloga">
+            <End Role="Uloga" EntitySet="Ulogas" />
+            <End Role="Korisnik" EntitySet="Korisniks" />
+          </AssociationSet>
+          <AssociationSet Name="OmiljeniBlog" Association="Self.OmiljeniBlog">
+            <End Role="Blog" EntitySet="Blogs" />
+            <End Role="Korisnik" EntitySet="Korisniks" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TestDB_DejanSavanovicModelStoreContainer" CdmEntityContainer="BlogContext">
+          <EntitySetMapping Name="Blogs">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Blog">
+              <MappingFragment StoreEntitySet="Blog">
+                <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+                <ScalarProperty Name="KorisnikId" ColumnName="KorisnikId" />
+                <ScalarProperty Name="DrzavaId" ColumnName="DrzavaId" />
+                <ScalarProperty Name="Naslov" ColumnName="Naslov" />
+                <ScalarProperty Name="Sadrzaj" ColumnName="Sadrzaj" />
+                <ScalarProperty Name="DatumPutovanja" ColumnName="DatumPutovanja" />
+                <ScalarProperty Name="NaslovnaSlikaLink" ColumnName="NaslovnaSlikaLink" />
+                <ScalarProperty Name="DatumKreiranja" ColumnName="DatumKreiranja" />
+                <ScalarProperty Name="Odobren" ColumnName="Odobren" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Drzavas">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Drzava">
+              <MappingFragment StoreEntitySet="Drzava">
+                <ScalarProperty Name="DrzavaId" ColumnName="DrzavaId" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Komentars">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Komentar">
+              <MappingFragment StoreEntitySet="Komentar">
+                <ScalarProperty Name="KomentarId" ColumnName="KomentarId" />
+                <ScalarProperty Name="KorisnikId" ColumnName="KorisnikId" />
+                <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+                <ScalarProperty Name="Sadrzaj" ColumnName="Sadrzaj" />
+                <ScalarProperty Name="DatumKreiranja" ColumnName="DatumKreiranja" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Korisniks">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Korisnik">
+              <MappingFragment StoreEntitySet="Korisnik">
+                <ScalarProperty Name="KorisnikId" ColumnName="KorisnikId" />
+                <ScalarProperty Name="UlogaId" ColumnName="UlogaId" />
+                <ScalarProperty Name="Ime" ColumnName="Ime" />
+                <ScalarProperty Name="Prezime" ColumnName="Prezime" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="KorisnickoIme" ColumnName="KorisnickoIme" />
+                <ScalarProperty Name="Lozinka" ColumnName="Lozinka" />
+                <ScalarProperty Name="Aktivan" ColumnName="Aktivan" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Slikas">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Slika">
+              <MappingFragment StoreEntitySet="Slika">
+                <ScalarProperty Name="SlikaId" ColumnName="SlikaId" />
+                <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+                <ScalarProperty Name="Link" ColumnName="Link" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ulogas">
+            <EntityTypeMapping TypeName="TestDB_DejanSavanovicModel.Uloga">
+              <MappingFragment StoreEntitySet="Uloga">
+                <ScalarProperty Name="UlogaId" ColumnName="UlogaId" />
+                <ScalarProperty Name="Naziv" ColumnName="Naziv" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="OmiljeniBlog" TypeName="TestDB_DejanSavanovicModel.OmiljeniBlog" StoreEntitySet="OmiljeniBlog">
+            <EndProperty Name="Blog">
+              <ScalarProperty Name="BlogId" ColumnName="BlogId" />
+            </EndProperty>
+            <EndProperty Name="Korisnik">
+              <ScalarProperty Name="KorisnikId" ColumnName="KorisnikId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

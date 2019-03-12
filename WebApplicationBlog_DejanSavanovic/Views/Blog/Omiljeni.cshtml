@@ -1,0 +1,13 @@
+﻿@model IEnumerable<WebApplicationBlog_DejanSavanovic.Models.OdobreniBlogoviViewModel>
+
+@{
+    ViewBag.Title = "Omiljeni";
+}
+
+<h2>Omiljeni blogovi</h2>
+
+<div>
+
+    @Html.Partial("_OdobreniBlogovi", Model)
+
+</div>

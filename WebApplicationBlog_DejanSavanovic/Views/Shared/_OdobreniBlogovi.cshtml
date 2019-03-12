@@ -1,0 +1,32 @@
+﻿@model IEnumerable<WebApplicationBlog_DejanSavanovic.Models.OdobreniBlogoviViewModel>
+
+<div>
+
+    @{ 
+
+        foreach(var item in Model)
+        {
+
+            <div class="row pt-2">
+
+                <div class="col-4">
+
+                    <img class="col-12" src="@item.NaslovSlikaLink"/>
+
+                </div>
+
+                <div class="col-8">
+
+                    <h3><a href="/Blog/Details/@item.BlogId">@item.Naslov</a></h3>
+
+                    <p class="pt-5">@item.KorisnickoIme <span class="float-right">@item.DatumKreiranja.ToShortDateString()</span></p>
+
+                </div>
+
+            </div>
+
+        }
+
+    }
+
+</div>
